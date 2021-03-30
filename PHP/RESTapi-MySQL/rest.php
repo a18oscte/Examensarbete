@@ -82,7 +82,7 @@ case 'GET': $the_request = &$_GET;
         //If there is no matching flightdata in the database
         }else{
             http_response_code(404);
-            echo json_encode(array("message" => "No flightdata matched the get request"));
+            echo json_encode(array("message" => "No flightdata matched the get request"), JSON_PRETTY_PRINT);
         }
     }
     break;
