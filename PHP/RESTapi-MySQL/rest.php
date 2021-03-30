@@ -106,15 +106,15 @@ case 'POST': $the_request = &$_POST;
         //Executes the sql statement and checks for errors
         if($stmt->execute()){
             http_response_code(200);
-            echo json_encode(array("message" => "flightdata was created."));
+            echo json_encode(array("message" => "flightdata was created."), JSON_PRETTY_PRINT);
         }else{
             http_response_code(503);
-            echo json_encode(array("message" => "Unable to create flightdata."));
+            echo json_encode(array("message" => "Unable to create flightdata."), JSON_PRETTY_PRINT);
         }
     }else{
         //Respones if there is no in-data
         http_response_code(204);
-        echo json_encode(array("message" => "Unable to create flightdata. Data is incomplete."));
+        echo json_encode(array("message" => "Unable to create flightdata. Data is incomplete."), JSON_PRETTY_PRINT);
     }
     break;
 
