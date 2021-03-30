@@ -1,5 +1,6 @@
 from flask import Flask,request, jsonify
 import mysql.connector
+import json
 
 app = Flask(__name__)
 
@@ -67,5 +68,20 @@ def get():
         return jsonify(flightdata),200
 
 @app.route('/', methods=['POST'])
-def hello_worlda():
-    return 'pöst!'
+def post():
+    if request.data:
+        data = json.loads(request.data)
+        cursor = db.cursor()
+        query = "INSERT INTO flightdata SET airline=%s, airlineId=%s, sourceAirport=%s, sourceAirportId=%s, destinationAirport=%s, destinationAirportId=%s, stops=%s, equipment=%s";
+        val = (data["airline"], data["airlineId"], data["sourceAirport"], data["sourceAirportId"], data["destinationAirport"], data["destinationAirportId"], data["stops"], data["equipment"])
+        cursor.execute(query, val)
+        
+        try:
+            db.commit()
+            return jsonify({"message": "flightdata was created."}),200
+
+        except mysql.connector.Error as error :
+            return jsonify({"message": "Unable to create flightdata."}),503
+
+    else:
+        return jsonify({"message": "Unable to create flightdata. Data is incomplete."}),204
