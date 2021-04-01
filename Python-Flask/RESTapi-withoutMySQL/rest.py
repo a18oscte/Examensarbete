@@ -53,3 +53,11 @@ def get():
 
     else:
         return jsonify(flightdata),200
+
+@app.route('/', methods=['POST'])
+def post():
+    if request.data:
+        return jsonify({"message": "flightdata was created."}),200
+        
+    else:
+        return jsonify({"message": "Unable to create flightdata. Data is incomplete."}),204
