@@ -1102,68 +1102,85 @@ $flightdata = array (
   ),
 );
 
+//get the in-data
+$data = json_decode(file_get_contents("php://input"));
+
 //check what type of request
 switch($_SERVER['REQUEST_METHOD'])
 {
-//If there is a get request
-case 'GET': $the_request = &$_GET;
-  //If there is no inparameters
-  if(empty($_GET)){         
-    //responed with the array with all flightdata
-    http_response_code(200);
-    echo json_encode($flightdata, JSON_PRETTY_PRINT);
-    
-  //If there is inparameters
-  }else{
-    //get the matching fligtdata from the array
-    $tmpflightdata = array();
-    for($i = 0; $i < count($flightdata); $i++){
-      if(isset($_GET['airline']) && $_GET['airline'] == $flightdata[$i]["airline"]){
-        array_push($tmpflightdata,$flightdata[$i]);
-        continue;
-      }
-      if(isset($_GET['airlineId']) && $_GET['airlineId'] == $flightdata[$i]["airlineId"]){
-        array_push($tmpflightdata,$flightdata[$i]);
-        continue;
-      }
-      if(isset($_GET['sourceAirport']) && $_GET['sourceAirport'] == $flightdata[$i]["sourceAirport"]){
-        array_push($tmpflightdata,$flightdata[$i]);
-        continue;
-      }
-      if(isset($_GET['sourceAirportId']) && $_GET['sourceAirportId'] == $flightdata[$i]["sourceAirportId"]){
-        array_push($tmpflightdata,$flightdata[$i]);
-        continue;
-      }
-      if(isset($_GET['destinationAirport']) && $_GET['destinationAirport'] == $flightdata[$i]["destinationAirport"]){
-        array_push($tmpflightdata,$flightdata[$i]);
-        continue;
-      }
-      if(isset($_GET['destinationAirportId']) && $_GET['destinationAirportId'] == $flightdata[$i]["destinationAirportId"]){
-        array_push($tmpflightdata,$flightdata[$i]);
-        continue;
-      }
-      if(isset($_GET['stops']) && $_GET['stops'] == $flightdata[$i]["stops"]){
-        array_push($tmpflightdata,$flightdata[$i]);
-        continue;
-      }
-      if(isset($_GET['equipment']) && $_GET['equipment'] == $flightdata[$i]["equipment"]){
-        array_push($tmpflightdata,$flightdata[$i]);
-        continue;
-      }
-    }
-
-    //If there is matching flightdata in the array
-    if(!empty($tmpflightdata)){
+  //If there is a get request
+  case 'GET': $the_request = &$_GET;
+    //If there is no inparameters
+    if(empty($_GET)){         
+      //responed with the array with all flightdata
       http_response_code(200);
-      //responed with the array with the flightdata
-      echo json_encode($tmpflightdata, JSON_PRETTY_PRINT);
-    //If there is no matching flightdata in the array
+      echo json_encode($flightdata, JSON_PRETTY_PRINT);
+      
+    //If there is inparameters
     }else{
-      http_response_code(404);
-      echo json_encode(array("message" => "No flightdata matched the get request"), JSON_PRETTY_PRINT);
+      //get the matching fligtdata from the array
+      $tmpflightdata = array();
+      for($i = 0; $i < count($flightdata); $i++){
+        if(isset($_GET['airline']) && $_GET['airline'] == $flightdata[$i]["airline"]){
+          array_push($tmpflightdata,$flightdata[$i]);
+          continue;
+        }
+        if(isset($_GET['airlineId']) && $_GET['airlineId'] == $flightdata[$i]["airlineId"]){
+          array_push($tmpflightdata,$flightdata[$i]);
+          continue;
+        }
+        if(isset($_GET['sourceAirport']) && $_GET['sourceAirport'] == $flightdata[$i]["sourceAirport"]){
+          array_push($tmpflightdata,$flightdata[$i]);
+          continue;
+        }
+        if(isset($_GET['sourceAirportId']) && $_GET['sourceAirportId'] == $flightdata[$i]["sourceAirportId"]){
+          array_push($tmpflightdata,$flightdata[$i]);
+          continue;
+        }
+        if(isset($_GET['destinationAirport']) && $_GET['destinationAirport'] == $flightdata[$i]["destinationAirport"]){
+          array_push($tmpflightdata,$flightdata[$i]);
+          continue;
+        }
+        if(isset($_GET['destinationAirportId']) && $_GET['destinationAirportId'] == $flightdata[$i]["destinationAirportId"]){
+          array_push($tmpflightdata,$flightdata[$i]);
+          continue;
+        }
+        if(isset($_GET['stops']) && $_GET['stops'] == $flightdata[$i]["stops"]){
+          array_push($tmpflightdata,$flightdata[$i]);
+          continue;
+        }
+        if(isset($_GET['equipment']) && $_GET['equipment'] == $flightdata[$i]["equipment"]){
+          array_push($tmpflightdata,$flightdata[$i]);
+          continue;
+        }
+      }
+
+      //If there is matching flightdata in the array
+      if(!empty($tmpflightdata)){
+        http_response_code(200);
+        //responed with the array with the flightdata
+        echo json_encode($tmpflightdata, JSON_PRETTY_PRINT);
+      //If there is no matching flightdata in the array
+      }else{
+        http_response_code(404);
+        echo json_encode(array("message" => "No flightdata matched the get request"), JSON_PRETTY_PRINT);
+      }
     }
-  }
-  break;
+    break;
+
+  case 'POST': $the_request = &$_POST;
+    //Only works if there is data
+    if(!empty($data)){
+        //If there is indata then simulate response
+            http_response_code(200);
+            echo json_encode(array("message" => "flightdata was created."), JSON_PRETTY_PRINT);
+    }else{
+        //Respones if there is no in-data
+        http_response_code(204);
+        echo json_encode(array("message" => "Unable to create flightdata. Data is incomplete."), JSON_PRETTY_PRINT);
+    }
+    break;
+
  // Etc.
 default:
     http_response_code(503);
