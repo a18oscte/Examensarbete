@@ -4,6 +4,7 @@ import json
 
 app = Flask(__name__)
 
+#Create database connection
 db = mysql.connector.connect(
   host="localhost",
   user="root",
@@ -11,9 +12,12 @@ db = mysql.connector.connect(
   database="examensarbete"
 )
 
+#If there is a get request
 @app.route('/', methods=['GET'])
 def get():
+    #If there is inparameters
     if request.args:
+        #Get the inparameters into an array
         tmp = {}
         tmp["id"]  = request.args.get('id')
         tmp["airline"]  = request.args.get('airline')
@@ -25,9 +29,12 @@ def get():
         tmp["stops"]  = request.args.get('stops')
         tmp["equipment"]  = request.args.get('equipment')
 
+        #Get the matching fligtdata from the database
         cursor = db.cursor()
         cursor.execute(f"SELECT * FROM flightdata WHERE id LIKE '{tmp.get('id')}' OR airline LIKE '{tmp.get('airline')}' OR airlineId LIKE '{tmp.get('airlineId')}' OR sourceAirport LIKE '{tmp.get('sourceAirport')}' OR sourceAirportId LIKE '{tmp.get('sourceAirportId')}' OR destinationAirport LIKE '{tmp.get('destinationAirport')}' OR destinationAirportId LIKE '{tmp.get('destinationAirportId')}' OR stops LIKE '{tmp.get('stops')}' OR equipment LIKE '{tmp.get('equipment')}'")
         result = cursor.fetchall()
+
+        #adding flightdata to a array
         flightdata = []
         for row in result:
             tmp = {}
@@ -41,16 +48,23 @@ def get():
             tmp["stops"] = row[7]
             tmp["equipment"] = row[8]
             flightdata.append(tmp)
-        
+
+        #If there is matching flightdata in the database
         if flightdata:
+            #responed with the array with the flightdata
             return jsonify(flightdata),200
+        #If there is no matching flightdata in the database
         else:
             return jsonify({"message": "No flightdata matched the get request"}),404
     
+    #If there is no inparameters
     else:
+        #Get all flightdatafrom the darabase
         cursor = db.cursor()
         cursor.execute("SELECT * FROM flightdata")
         result = cursor.fetchall()
+
+        #Adding flightdata to a array
         flightdata = []
         for row in result:
             tmp = {}
@@ -65,17 +79,26 @@ def get():
             tmp["equipment"] = row[8]
             flightdata.append(tmp)
 
+        #Responed with the array with all flightdata
         return jsonify(flightdata),200
 
+#If there is a post request
 @app.route('/', methods=['POST'])
 def post():
+
+    #Only works if there is in-data
     if request.data:
+
+        #converts in-data to a dictionary 
         data = json.loads(request.data)
+
+        #Preparing the sql statement with the in-data
         cursor = db.cursor()
         query = "INSERT INTO flightdata SET airline=%s, airlineId=%s, sourceAirport=%s, sourceAirportId=%s, destinationAirport=%s, destinationAirportId=%s, stops=%s, equipment=%s";
         val = (data["airline"], data["airlineId"], data["sourceAirport"], data["sourceAirportId"], data["destinationAirport"], data["destinationAirportId"], data["stops"], data["equipment"])
         cursor.execute(query, val)
         
+        #Executes the sql statement and checks for errors
         try:
             db.commit()
             return jsonify({"message": "flightdata was created."}),200
@@ -83,5 +106,6 @@ def post():
         except mysql.connector.Error as error :
             return jsonify({"message": "Unable to create flightdata."}),503
 
+    #Respones if there is no in-data
     else:
         return jsonify({"message": "Unable to create flightdata. Data is incomplete."}),204

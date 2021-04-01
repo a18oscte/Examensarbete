@@ -1171,7 +1171,7 @@ switch($_SERVER['REQUEST_METHOD'])
   case 'POST': $the_request = &$_POST;
     //Only works if there is data
     if(!empty($data)){
-        //If there is indata then simulate response
+        //If there is in-data then simulate response
             http_response_code(200);
             echo json_encode(array("message" => "flightdata was created."), JSON_PRETTY_PRINT);
     }else{
