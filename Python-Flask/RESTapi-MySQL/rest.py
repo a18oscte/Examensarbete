@@ -92,19 +92,36 @@ def post():
         #converts in-data to a dictionary 
         data = json.loads(request.data)
 
-        #Preparing the sql statement with the in-data
-        cursor = db.cursor()
-        query = "INSERT INTO flightdata SET airline=%s, airlineId=%s, sourceAirport=%s, sourceAirportId=%s, destinationAirport=%s, destinationAirportId=%s, stops=%s, equipment=%s";
-        val = (data["airline"], data["airlineId"], data["sourceAirport"], data["sourceAirportId"], data["destinationAirport"], data["destinationAirportId"], data["stops"], data["equipment"])
-        cursor.execute(query, val)
-        
-        #Executes the sql statement and checks for errors
-        try:
-            db.commit()
-            return jsonify({"message": "flightdata was created."}),200
+        if type(data) == list:
+            for obj in data:
+                #Preparing the sql statement with the in-data
+                cursor = db.cursor()
+                query = "INSERT INTO flightdata SET airline=%s, airlineId=%s, sourceAirport=%s, sourceAirportId=%s, destinationAirport=%s, destinationAirportId=%s, stops=%s, equipment=%s";
+                val = (obj["airline"], obj["airlineId"], obj["sourceAirport"], obj["sourceAirportId"], obj["destinationAirport"], obj["destinationAirportId"], obj["stops"], obj["equipment"])
+                cursor.execute(query, val)
 
-        except mysql.connector.Error as error :
-            return jsonify({"message": "Unable to create flightdata."}),503
+                #Executes the sql statement and checks for errors
+                try:
+                    db.commit()
+
+                except mysql.connector.Error as error :
+                    return jsonify({"message": "Unable to create flightdata."}),503
+                
+            return jsonify({"message": "flightdata was created."}),200
+        else:
+            #Preparing the sql statement with the in-data
+            cursor = db.cursor()
+            query = "INSERT INTO flightdata SET airline=%s, airlineId=%s, sourceAirport=%s, sourceAirportId=%s, destinationAirport=%s, destinationAirportId=%s, stops=%s, equipment=%s";
+            val = (data["airline"], data["airlineId"], data["sourceAirport"], data["sourceAirportId"], data["destinationAirport"], data["destinationAirportId"], data["stops"], data["equipment"])
+            cursor.execute(query, val)
+        
+            #Executes the sql statement and checks for errors
+            try:
+                db.commit()
+                return jsonify({"message": "flightdata was created."}),200
+
+            except mysql.connector.Error as error :
+                return jsonify({"message": "Unable to create flightdata."}),503
 
     #Respones if there is no in-data
     else:

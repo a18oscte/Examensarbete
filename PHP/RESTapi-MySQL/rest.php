@@ -91,20 +91,42 @@ case 'GET': $the_request = &$_GET;
 case 'POST': $the_request = &$_POST;
     //Only works if there is data
     if(!empty($data)){
-        //Preparing the sql statement with the in-data
-        $query = "INSERT INTO flightdata SET airline=:airline, airlineId=:airlineId, sourceAirport=:sourceAirport, sourceAirportId=:sourceAirportId, destinationAirport=:destinationAirport, destinationAirportId=:destinationAirportId, stops=:stops, equipment=:equipment";
-        $stmt = $conn->prepare($query);
-        $stmt->bindParam(":airline", $data->airline);
-        $stmt->bindParam(":airlineId", $data->airlineId);
-        $stmt->bindParam(":sourceAirport", $data->sourceAirport);
-        $stmt->bindParam(":sourceAirportId", $data->sourceAirportId);
-        $stmt->bindParam(":destinationAirport", $data->destinationAirport);
-        $stmt->bindParam(":destinationAirportId", $data->destinationAirportId);
-        $stmt->bindParam(":stops", $data->stops);
-        $stmt->bindParam(":equipment", $data->equipment);
-
+        if(is_array($data)){
+            $created = true;
+            foreach ($data as $obj){
+                //Preparing the sql statement with the in-data
+                $query = "INSERT INTO flightdata SET airline=:airline, airlineId=:airlineId, sourceAirport=:sourceAirport, sourceAirportId=:sourceAirportId, destinationAirport=:destinationAirport, destinationAirportId=:destinationAirportId, stops=:stops, equipment=:equipment";
+                $stmt = $conn->prepare($query);
+                $stmt->bindParam(":airline", $obj->airline);
+                $stmt->bindParam(":airlineId", $obj->airlineId);
+                $stmt->bindParam(":sourceAirport", $obj->sourceAirport);
+                $stmt->bindParam(":sourceAirportId", $obj->sourceAirportId);
+                $stmt->bindParam(":destinationAirport", $obj->destinationAirport);
+                $stmt->bindParam(":destinationAirportId", $obj->destinationAirportId);
+                $stmt->bindParam(":stops", $obj->stops);
+                $stmt->bindParam(":equipment", $obj->equipment);
+    
+                if ($created){
+                    $created = $stmt->execute();
+                }
+            }
+        }else{
+            //Preparing the sql statement with the in-data
+            $query = "INSERT INTO flightdata SET airline=:airline, airlineId=:airlineId, sourceAirport=:sourceAirport, sourceAirportId=:sourceAirportId, destinationAirport=:destinationAirport, destinationAirportId=:destinationAirportId, stops=:stops, equipment=:equipment";
+            $stmt = $conn->prepare($query);
+            $stmt->bindParam(":airline", $data->airline);
+            $stmt->bindParam(":airlineId", $data->airlineId);
+            $stmt->bindParam(":sourceAirport", $data->sourceAirport);
+            $stmt->bindParam(":sourceAirportId", $data->sourceAirportId);
+            $stmt->bindParam(":destinationAirport", $data->destinationAirport);
+            $stmt->bindParam(":destinationAirportId", $data->destinationAirportId);
+            $stmt->bindParam(":stops", $data->stops);
+            $stmt->bindParam(":equipment", $data->equipment);
+            
+            $created = $stmt->execute();
+        }
         //Executes the sql statement and checks for errors
-        if($stmt->execute()){
+        if($created){
             http_response_code(200);
             echo json_encode(array("message" => "flightdata was created."), JSON_PRETTY_PRINT);
         }else{
