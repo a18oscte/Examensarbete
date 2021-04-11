@@ -11,17 +11,62 @@
 
 (function() {
     'use strict';
-    var iterations = 100;
-    var link = "http://localhost/PHP/RESTapi-MySQL/rest.php";
 
     var str="data:text/csv;charset=utf-8,";
     var measurement;
     var measurement2;
 
+    var link;
+
+    var phpmysql = document.createElement("INPUT");
+    phpmysql.setAttribute("type", "radio");
+    phpmysql.setAttribute("name", "link");
+    phpmysql.setAttribute("value", "http://localhost/PHP/RESTapi-MySQL/rest.php");
+    document.body.appendChild(phpmysql);
+    var phpmysqltext = document.createElement("label");
+    phpmysqltext.innerHTML= "PHP MySQL<br>";
+    document.body.appendChild(phpmysqltext);
+
+    var phpnomysql = document.createElement("INPUT");
+    phpnomysql.setAttribute("type", "radio");
+    phpnomysql.setAttribute("name", "link");
+    phpnomysql.setAttribute("value", "http://localhost/PHP/RESTapi-withoutMySQL/rest.php");
+    document.body.appendChild(phpnomysql);
+    var phpnomysqltext = document.createElement("label");
+    phpnomysqltext.innerHTML= "PHP without MySQL<br>";
+    document.body.appendChild(phpnomysqltext);
+
+    var flaskmysql = document.createElement("INPUT");
+    flaskmysql.setAttribute("type", "radio");
+    flaskmysql.setAttribute("name", "link");
+    flaskmysql.setAttribute("value", "http://127.0.0.1:5000/");
+    document.body.appendChild(flaskmysql);
+    var flaskmysqltext = document.createElement("label");
+    flaskmysqltext.innerHTML= "FLASK MySQL<br>";
+    document.body.appendChild(flaskmysqltext);
+
+    var flasknomysql = document.createElement("INPUT");
+    flasknomysql.setAttribute("type", "radio");
+    flasknomysql.setAttribute("name", "link");
+    flasknomysql.setAttribute("value", "http://127.0.0.1:5000/");
+    document.body.appendChild(flasknomysql);
+    var flasknomysqltext = document.createElement("label");
+    flasknomysqltext.innerHTML= "FLASK without MySQL<br>";
+    document.body.appendChild(flasknomysqltext);
+
+    var iterations;
+    var iterationsinput = document.createElement("INPUT");
+    iterationsinput.setAttribute("type", "number");
+    document.body.appendChild(iterationsinput);
+
     var btn = document.createElement("INPUT");
     btn.setAttribute("type", "button");
     btn.setAttribute("value", "POST");
     btn.onclick = function(){
+        iterations = iterationsinput.value;
+        link = document.querySelector('input[name="link"]:checked').value;
+        console.log(link);
+
         $.getJSON("../flightdata.json", function(json) {
             for(var i = 0; i < iterations;i++){
                 post(json[i]);
