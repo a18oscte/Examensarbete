@@ -92,7 +92,9 @@ def post():
         #converts in-data to a dictionary 
         data = json.loads(request.data)
 
+        #if there is multiple flightdata objects in the data
         if type(data) == list:
+            #loops throut the flightdata
             for obj in data:
                 #Preparing the sql statement with the in-data
                 cursor = db.cursor()
@@ -108,6 +110,8 @@ def post():
                     return jsonify({"message": "Unable to create flightdata."}),503
                 
             return jsonify({"message": "flightdata was created."}),200
+        
+        #if there is one flightdata object in the data
         else:
             #Preparing the sql statement with the in-data
             cursor = db.cursor()

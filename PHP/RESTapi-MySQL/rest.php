@@ -15,7 +15,7 @@ switch($_SERVER['REQUEST_METHOD'])
 case 'GET': $the_request = &$_GET;
     //If there is no inparameters
     if(empty($_GET)){
-        //Get all flightdatafrom the darabase
+        //Get all flightdatafrom the database
         $query = "SELECT * FROM flightdata";
         $stmt = $conn->query($query);
        
@@ -91,8 +91,11 @@ case 'GET': $the_request = &$_GET;
 case 'POST': $the_request = &$_POST;
     //Only works if there is data
     if(!empty($data)){
+        //if there is multiple flightdata objects in the data
         if(is_array($data)){
+            //declaring variable to try the execute the first query
             $created = true;
+            //loops throut the flightdata
             foreach ($data as $obj){
                 //Preparing the sql statement with the in-data
                 $query = "INSERT INTO flightdata SET airline=:airline, airlineId=:airlineId, sourceAirport=:sourceAirport, sourceAirportId=:sourceAirportId, destinationAirport=:destinationAirport, destinationAirportId=:destinationAirportId, stops=:stops, equipment=:equipment";
@@ -106,10 +109,12 @@ case 'POST': $the_request = &$_POST;
                 $stmt->bindParam(":stops", $obj->stops);
                 $stmt->bindParam(":equipment", $obj->equipment);
     
+                //Checks if the last query was successful
                 if ($created){
                     $created = $stmt->execute();
                 }
             }
+        //if there is one flightdata object in the data
         }else{
             //Preparing the sql statement with the in-data
             $query = "INSERT INTO flightdata SET airline=:airline, airlineId=:airlineId, sourceAirport=:sourceAirport, sourceAirportId=:sourceAirportId, destinationAirport=:destinationAirport, destinationAirportId=:destinationAirportId, stops=:stops, equipment=:equipment";
