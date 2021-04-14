@@ -40,9 +40,22 @@ def homePageView(request):
                 data = json.loads(request.body)
             except ValueError:
                 return JsonResponse({"message": "Unable to create flightdata. Data is incomplete."}, status=204)
-            flightdata  = Flightdata(airline=data["airline"], airlineid=data["airlineId"], sourceairport=data["sourceAirport"], sourceairportid=data["sourceAirportId"], destinationairport=data["destinationAirport"], destinationairportid=data["destinationAirportId"], stops=data["stops"], equipment=data["equipment"])
-            flightdata.save()
-            return JsonResponse({"message": "flightdata was created."}, status=200)
+            
+            #if there is multiple flightdata objects in the data
+            if type(data) == list:
+                #loops throut the flightdata
+                for obj in data:
+                    #creates a object with the flightdata then saves it to the database
+                    flightdata  = Flightdata(airline=obj["airline"], airlineid=obj["airlineId"], sourceairport=obj["sourceAirport"], sourceairportid=obj["sourceAirportId"], destinationairport=obj["destinationAirport"], destinationairportid=obj["destinationAirportId"], stops=obj["stops"], equipment=obj["equipment"])
+                    flightdata.save()
+
+                return JsonResponse({"message": "flightdata was created."}, status=200)
+            else:
+                #creates a object with the flightdata then saves it to the database
+                flightdata  = Flightdata(airline=data["airline"], airlineid=data["airlineId"], sourceairport=data["sourceAirport"], sourceairportid=data["sourceAirportId"], destinationairport=data["destinationAirport"], destinationairportid=data["destinationAirportId"], stops=data["stops"], equipment=data["equipment"])
+                flightdata.save()
+                
+                return JsonResponse({"message": "flightdata was created."}, status=200)
         #If there is no body data
         else:
             return JsonResponse({"message": "Unable to create flightdata. Data is incomplete."}, status=204)
