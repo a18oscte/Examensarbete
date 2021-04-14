@@ -17,7 +17,7 @@ db = mysql.connector.connect(
 def get():
     #If there is inparameters
     if request.args:
-        #Get the inparameters into an array
+        #Get the inparameters into an dictionary
         tmp = {}
         tmp["id"]  = request.args.get('id')
         tmp["airline"]  = request.args.get('airline')
@@ -34,7 +34,7 @@ def get():
         cursor.execute(f"SELECT * FROM flightdata WHERE id LIKE '{tmp.get('id')}' OR airline LIKE '{tmp.get('airline')}' OR airlineId LIKE '{tmp.get('airlineId')}' OR sourceAirport LIKE '{tmp.get('sourceAirport')}' OR sourceAirportId LIKE '{tmp.get('sourceAirportId')}' OR destinationAirport LIKE '{tmp.get('destinationAirport')}' OR destinationAirportId LIKE '{tmp.get('destinationAirportId')}' OR stops LIKE '{tmp.get('stops')}' OR equipment LIKE '{tmp.get('equipment')}'")
         result = cursor.fetchall()
 
-        #adding flightdata to a array
+        #adding flightdata to a list
         flightdata = []
         for row in result:
             tmp = {}
@@ -51,7 +51,7 @@ def get():
 
         #If there is matching flightdata in the database
         if flightdata:
-            #responed with the array with the flightdata
+            #responed with the list with the flightdata
             return jsonify(flightdata),200
         #If there is no matching flightdata in the database
         else:
@@ -64,7 +64,7 @@ def get():
         cursor.execute("SELECT * FROM flightdata")
         result = cursor.fetchall()
 
-        #Adding flightdata to a array
+        #Adding flightdata to a list
         flightdata = []
         for row in result:
             tmp = {}
@@ -79,7 +79,7 @@ def get():
             tmp["equipment"] = row[8]
             flightdata.append(tmp)
 
-        #Responed with the array with all flightdata
+        #Responed with the list with all flightdata
         return jsonify(flightdata),200
 
 #If there is a post request
