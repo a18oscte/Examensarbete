@@ -16,7 +16,7 @@ def homePageView(request):
             FlightdataQuerySet = Flightdata.objects.filter(Q(id=data.get("id", False)) | Q(airline=data.get("airline", False)) | Q(airlineid=data.get("airlineId", False)) | Q(sourceairport=data.get("sourceAirport", False)) | Q(sourceairportid=data.get("sourceAirportId", False)) | Q(destinationairport=data.get("destinationAirport", False)) | Q(destinationairportid=data.get("destinationAirportId", False)) | Q(stops=data.get("stops", None)) | Q(equipment=data.get("equipment", False)))
             #If there is no matching flightdata in the database
             if not FlightdataQuerySet:
-                return JsonResponse({"message": "No flightdata matched the get request"}, safe=False, status=404)
+                return JsonResponse({"message": "No flightdata matched the get request"}, status=404)
             #If there is matching flightdata in the database
             else:
                 #converts the Query set to a list with dictionarys
@@ -33,5 +33,16 @@ def homePageView(request):
 
     #If there is a post request
     if request.method == 'POST':
-        data = json.loads(request.body)
-        return JsonResponse(data)
+        #Checks if there is body data
+        if request.body:
+            #Checks if the body data is JSON
+            try:
+                data = json.loads(request.body)
+            except ValueError:
+                return JsonResponse({"message": "Unable to create flightdata. Data is incomplete."}, status=204)
+            flightdata  = Flightdata(airline=data["airline"], airlineid=data["airlineId"], sourceairport=data["sourceAirport"], sourceairportid=data["sourceAirportId"], destinationairport=data["destinationAirport"], destinationairportid=data["destinationAirportId"], stops=data["stops"], equipment=data["equipment"])
+            flightdata.save()
+            return JsonResponse({"message": "flightdata was created."}, status=200)
+        #If there is no body data
+        else:
+            return JsonResponse({"message": "Unable to create flightdata. Data is incomplete."}, status=204)
