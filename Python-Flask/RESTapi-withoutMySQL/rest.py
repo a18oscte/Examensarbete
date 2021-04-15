@@ -15,40 +15,31 @@ def get():
     #If there is inparameters
     if request.args:
         #get the matching fligtdata from the array
-        tmpflightdata = {}
-        i = 0    
+        tmpflightdata = [] 
         for tmp in flightdata:
             if request.args.get('airline') and request.args.get('airline') == tmp['airline']:
-                i += 1
-                tmpflightdata[i] = tmp
+                tmpflightdata.append(tmp) 
                 continue
             if request.args.get('airlineId') and request.args.get('airlineId') == tmp['airlineId']:
-                i += 1
-                tmpflightdata[i] = tmp
+                tmpflightdata.append(tmp) 
                 continue
             if request.args.get('sourceAirport') and request.args.get('sourceAirport') == tmp['sourceAirport']:
-                i += 1
-                tmpflightdata[i] = tmp
+                tmpflightdata.append(tmp) 
                 continue
             if request.args.get('sourceAirportId') and request.args.get('sourceAirportId') == tmp['sourceAirportId']:
-                i += 1
-                tmpflightdata[i] = tmp
+                tmpflightdata.append(tmp) 
                 continue
             if request.args.get('destinationAirport') and request.args.get('destinationAirport') == tmp['destinationAirport']:
-                i += 1
-                tmpflightdata[i] = tmp
+                tmpflightdata.append(tmp) 
                 continue
             if request.args.get('destinationAirportId') and request.args.get('destinationAirportId') == tmp['destinationAirportId']:
-                i += 1
-                tmpflightdata[i] = tmp
+                tmpflightdata.append(tmp) 
                 continue
-            if request.args.get('stops') and request.args.get('stops') == tmp['stops']:
-                i += 1
-                tmpflightdata[i] = tmp
+            if request.args.get('stops') and request.args.get('stops') == str(tmp['stops']):
+                tmpflightdata.append(tmp) 
                 continue
             if request.args.get('equipment') and request.args.get('equipment') == tmp['equipment']:
-                i += 1
-                tmpflightdata[i] = tmp
+                tmpflightdata.append(tmp) 
                 continue
 
         #If there is matching flightdata in the array
