@@ -26,7 +26,7 @@ def homePageView(request):
     
         #If there is no inparameters
         else:
-            #Gets the data from the database
+            #Gets the data from the database and add it to a list
             flightdata = [entry for entry in Flightdata.objects.values() ]
             #responed with the list with the flightdata
             return JsonResponse(flightdata, safe=False, status=200)
