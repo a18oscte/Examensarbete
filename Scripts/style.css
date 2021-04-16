@@ -1,0 +1,26 @@
+body{
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+.inputBox, #outputBox{
+    border:1px solid black; display: inline-block;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+#outputBox{
+    overflow: auto;
+    width: 98%;
+    height: 500px;
+}
+
+#downloadBox{
+    width:220px;
+    height:20px;
+    text-align: center;
+}
+
+#loadBox{
+    height:20px;
+    text-align: center;
+}

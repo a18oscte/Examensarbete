@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script src="measure.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <title>measure</title>
+</head>
+<body>
+    <div>
+        <div id="postbox" class="inputBox">
+            <h1>POST</h1>
+            <div>
+                <input type="radio" name="linkPost" value="http://localhost/PHP/RESTapi-MySQL/rest.php">
+                <label>PHP MySQL</label>
+            </div>
+            <div>
+                <input type="radio" name="linkPost" value="http://localhost/PHP/RESTapi-withoutMySQL/rest.php">
+                <label>PHP without MySQL</label>
+            </div>
+            <div>
+                <input type="radio" name="linkPost" value="http://127.0.0.1:5000/">
+                <label>FLASK MySQL</label>
+            </div>
+            <div>
+                <input type="radio" name="linkPost" value="http://127.0.0.1:5000/">
+                <label>FLASK without MySQL</label>
+            </div>
+            <div>
+                <input type="radio" name="linkPost" value="http://127.0.0.1:8000/">
+                <label>Django MySQL</label>
+            </div>
+            <div>
+                <input type="radio" name="linkPost" value="http://127.0.0.1:8000/">
+                <label>Django without MySQL</label>
+            </div>
+            <div>
+                <input type="number" id="iterationsPost" placeholder="Number of iterations">
+                <input type="button" value="POST" id="buttonPost" onClick="postButton()">
+            </div>
+        </div>
+        <div id="getbox" class="inputBox">
+            <h1>GET</h1>
+            <div>
+                <input type="radio" name="linkGet" value="http://localhost/PHP/RESTapi-MySQL/rest.php">
+                <label>PHP MySQL</label>
+            </div>
+            <div>
+                <input type="radio" name="linkGet" value="http://localhost/PHP/RESTapi-withoutMySQL/rest.php">
+                <label>PHP without MySQL</label>
+            </div>
+            <div>
+                <input type="radio" name="linkGet" value="http://127.0.0.1:5000/">
+                <label>FLASK MySQL</label>
+            </div>
+            <div>
+                <input type="radio" name="linkGet" value="http://127.0.0.1:5000/">
+                <label>FLASK without MySQL</label>
+            </div>
+            <div>
+                <input type="radio" name="linkGet" value="http://127.0.0.1:8000/">
+                <label>Django MySQL</label>
+            </div>
+            <div>
+                <input type="radio" name="linkGet" value="http://127.0.0.1:8000/">
+                <label>Django without MySQL</label>
+            </div>
+            <div>
+                <input type="number" id="iterationsGet" placeholder="Number of iterations">
+                <input type="button" value="GET" id="buttonGet" onClick="getButton()">
+                <input type="button" value="GET ALL" id="buttonGet" onClick="getAllButton()">
+            </div>
+        </div>
+        <div class="inputBox" id="loadBox">
+            0/0
+        </div>
+        <div class="inputBox" id="downloadBox">
+            <a id="download">Waiting for results</a>
+        </div>
+    </div>
+    <div id="outputBox">
+        
+    </div>
+</body>
+</html>
