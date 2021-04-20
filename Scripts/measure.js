@@ -132,9 +132,3 @@ function randomParam(json) {
 
     return "?" + key + "=" + obj[key];
 };
-
-function render(element,number) {
-    if (element.length == number) {
-      window.requestAnimationFrame(render(element,number));
-    }
-};
