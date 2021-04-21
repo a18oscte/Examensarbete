@@ -76,7 +76,7 @@ function getAllButton(){
 function post(json){
     var xhr = new XMLHttpRequest();
     xhr.open("POST", link, false);
-    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Content-Type', 'text/plain');
     measurement = performance.now();
     xhr.send(JSON.stringify(json));
     measurement2 = performance.now();
@@ -89,7 +89,7 @@ function post(json){
 function get(param){
     var xhr = new XMLHttpRequest();
     xhr.open("GET", link + param, false);
-    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Content-Type', 'text/plain');
     measurement = performance.now();
     xhr.send();
     measurement2 = performance.now();
@@ -103,7 +103,7 @@ function get(param){
 function getAll(){
     var xhr = new XMLHttpRequest();
     xhr.open("GET", link, false);
-    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Content-Type', 'text/plain');
     measurement = performance.now();
     xhr.send();
     measurement2 = performance.now();
