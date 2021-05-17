@@ -10,11 +10,11 @@ from django.db import models
 
 class Flightdata(models.Model):
     airline = models.CharField(max_length=3, blank=True, null=True)
-    airlineid = models.IntegerField(db_column='airlineId', blank=True, null=True)  # Field name made lowercase.
+    airlineid = models.CharField(db_column='airlineId', max_length=10, blank=True, null=True)  # Field name made lowercase.
     sourceairport = models.CharField(db_column='sourceAirport', max_length=4, blank=True, null=True)  # Field name made lowercase.
-    sourceairportid = models.IntegerField(db_column='sourceAirportId', blank=True, null=True)  # Field name made lowercase.
+    sourceairportid = models.CharField(db_column='sourceAirportId', max_length=10, blank=True, null=True)  # Field name made lowercase.
     destinationairport = models.CharField(db_column='destinationAirport', max_length=4, blank=True, null=True)  # Field name made lowercase.
-    destinationairportid = models.IntegerField(db_column='destinationAirportId', blank=True, null=True)  # Field name made lowercase.
+    destinationairportid = models.CharField(db_column='destinationAirportId', max_length=10, blank=True, null=True)  # Field name made lowercase.
     stops = models.IntegerField(blank=True, null=True)
     equipment = models.CharField(max_length=32, blank=True, null=True)
 
